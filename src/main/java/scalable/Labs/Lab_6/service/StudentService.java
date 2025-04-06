@@ -26,7 +26,7 @@ public class StudentService {
     }
 
     // Retrieve a student by ID
-    @Cacheable(value = "students_cache",key = "#id")
+    @Cacheable(value = "student_cache",key = "#id")
     public Optional<Student> getStudentById(Integer id) {
         return studentRepository.findById(id);
     }
@@ -37,6 +37,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
+    @CachePut(value = "student_cache",key = "#result.id")
     public Student updateStudent(Integer id, Student student) {
         Optional<Student> studentOptional = studentRepository.findById(id);
         if (studentOptional.isPresent()) {

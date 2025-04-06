@@ -1,5 +1,7 @@
 package scalable.Labs.Lab_6.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import scalable.Labs.Lab_6.model.Instructor;
@@ -23,6 +25,7 @@ public class InstructorService {
     }
 
     // Retrieve an instructor by its ID.
+    @Cacheable(value = "instructor_cache",key = "#id")
     public Instructor getInstructorById(Integer id) {
         Optional<Instructor> instructor = instructorRepository.findById(id);
         if (instructor.isPresent()) {
@@ -33,11 +36,13 @@ public class InstructorService {
     }
 
     // Save a new instructor.
+    @CachePut(value = "instructor_cache",key = "#result.id")
     public Instructor saveInstructor(Instructor instructor) {
         return instructorRepository.save(instructor);
     }
 
     // Update an existing instructor.
+    @CachePut(value = "instructor_cache",key = "#result.id")
     public Instructor updateInstructor(Integer id, Instructor updatedInstructor) {
         Optional<Instructor> instructor = instructorRepository.findById(id);
         if (instructor.isPresent()) {
@@ -55,6 +60,7 @@ public class InstructorService {
     }
 
     // Delete an instructor by its ID.
+    @CacheEvict(value = "instructor_cache",key = "#id")
     public void deleteInstructor(Integer id) {
         instructorRepository.deleteById(id);
     }
