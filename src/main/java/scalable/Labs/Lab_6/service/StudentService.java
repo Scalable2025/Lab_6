@@ -26,13 +26,11 @@ public class StudentService {
     }
 
     // Retrieve a student by ID
-    @Cacheable(value = "students_cache",key = "#id")
     public Optional<Student> getStudentById(Integer id) {
         return studentRepository.findById(id);
     }
 
     // Create or update a student
-    @CachePut(value = "student_cache",key = "#result.id")
     public Student saveStudent(Student student) {
         return studentRepository.save(student);
     }
