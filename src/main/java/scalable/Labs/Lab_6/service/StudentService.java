@@ -50,7 +50,6 @@ public class StudentService {
     }
 
     // Delete a student by ID
-    @CacheEvict(value = "student_cache",key = "#id")
     public void deleteStudent(Integer id) {
         studentRepository.deleteById(id);
     }
